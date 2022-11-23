@@ -10,20 +10,13 @@ def pass_gen(length, inclusions_list, exclude=False):
     exclusion = 'IilL1o0O'
 
     raw_pass_char = ''
-    for item in inclusions_list:
-        raw_pass_char += possible_inclusions[item]
-
+    raw_pass_char += ''.join([possible_inclusions[item] for item in inclusions_list])
     if exclude:
-        excluded_raw_pass_char = ''
-        for c in raw_pass_char:
-            excluded_raw_pass_char += c if c not in exclusion else ''
-        raw_pass_char = excluded_raw_pass_char
+        raw_pass_char = [raw_pass_char := raw_pass_char.replace(c, '')
+                         for c in raw_pass_char if c in exclusion][-1]
 
-    password = ''
-    for _ in range(length):
-        password += choice(raw_pass_char)
+    return ''.join([choice(raw_pass_char) for _ in range(length)])
 
-    return password
 
 def main():
     inclusions_list = []
